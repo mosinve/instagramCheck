@@ -17,10 +17,24 @@ use GuzzleHttp\Subscriber\Instagram\ImplicitAuth;
  */
 class Checker
 {
+    /**
+     * @var SessionStorage
+     */
     private $_storage;
+    /**
+     * @var Client
+     */
     private $_api;
+    /**
+     * @var HttpClient
+     */
     private $_http;
 
+    /**
+     * Checker конструктор.
+     * @param array $config
+     * @param SessionStorage $storage
+     */
     public function __construct(array $config, SessionStorage $storage)
     {
         $this->_api = new Client($config);
@@ -38,16 +52,14 @@ class Checker
 	    $this->_http->getEmitter()->attach($implicitAuth);
 	    $this->_http->post('https://instagram.com/oauth/authorize');
 	    $this->_storage->set('access_token', $implicitAuth->getAccessToken());
-	    $this->makeSubscription('callback', $config);
+	    $this->makeSubscription();
 	    $this->_api->setAccessToken($this->_storage->get('access_token'));
     }
 
-    /**
-     * @param $subscription_callback
-     */
-    private function makeSubscription($subscription_callback, $config)
+        private function makeSubscription()
     {
-    	$response = $this->_http->post('https://api.instagram.com/v1/subscriptions/', [
+    	$config = $this->_storage->get('config');
+        $response = $this->_http->post('https://api.instagram.com/v1/subscriptions/', [
     		'future' => true,
 		    'body' => [
 			    'client_id' => $config['apiKey'],
@@ -66,6 +78,8 @@ class Checker
 
 
 	/**
+     *
+     * Статистика распределения подписчиков по категориям
 	 * @param $followersCats
 	 *
 	 * @return array
@@ -87,6 +101,18 @@ class Checker
 		    }
 		    return json_encode([time()=> $followersCount]);
 	    }
+    }
+
+
+    /**
+     *
+     * @param $mediaId
+     */
+    public function getFeedbackStats($mediaId)
+    {
+        $likes = $this->_api->getMediaLikes($mediaId)->data;
+        $comments = $this->_api->getMediaComments($mediaId)->data;
+
     }
 
 }
