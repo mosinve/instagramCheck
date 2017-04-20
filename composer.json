@@ -1,0 +1,25 @@
+{
+    "name": "optics-center/insta-check",
+    "description": "Instagramm account quality check microservice",
+    "minimum-stability": "stable",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "mosinve",
+            "email": "mosinve@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "instaCheck\\": "src/"
+        }
+    },
+    "require": {
+        "andreyco/instagram": "^3.4",
+        "guzzlehttp/psr7": "^1.4@dev",
+        "guzzlehttp/guzzle-instagram-subscriber": "v0.2.0",
+        "react/http": "^0.6.0",
+        "react/dns": "^0.4.8"
+
+    }
+}
