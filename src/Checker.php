@@ -112,7 +112,7 @@ class Checker
     {
         $likes = $this->_api->getMediaLikes($mediaId)->data;
         $comments = $this->_api->getMediaComments($mediaId)->data;
-
+        // TODO Обработка массивов с данными лайков и комментариев и вывод результата в формате JSON
     }
 
 }
